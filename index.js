@@ -35,7 +35,9 @@ io.on("connection", (socket) => {
 
   socket.on("newIceCandidate", ({ candidate, to }) => {
     console.log("newIceCandidate", candidate);
-    io.to(to).emit("newIceCandidate", { candidate });
+    setTimeout(() => {
+      io.to(to).emit("newIceCandidate", { candidate });
+    }, 1000);
   });
 
   socket.on("callUser", ({ offer, userToCall, callerId, name }) => {
