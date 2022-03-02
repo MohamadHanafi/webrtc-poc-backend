@@ -21,6 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 io.on("connection", (socket) => {
+  console.log("a user connected");
   socket.on("userJoined", (user) => {
     addUser({
       socketId: socket.id,
@@ -33,15 +34,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newIceCandidate", ({ candidate, to }) => {
+    console.log("newIceCandidate", candidate);
     io.to(to).emit("newIceCandidate", { candidate });
   });
 
   socket.on("callUser", ({ offer, userToCall, callerId, name }) => {
     const from = { socketId: callerId, name };
+    console.log("offer received: ", offer);
     io.to(userToCall).emit("callUser", { offer, from });
   });
 
   socket.on("answerCall", ({ answer, to }) => {
+    console.log("answer received: ", answer);
     io.to(to).emit("callAccepted", { answer });
   });
 
